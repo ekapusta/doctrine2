@@ -1822,15 +1822,15 @@ class Parser
         while ($this->lexer->isNextToken(Lexer::T_COMMA)) {
             $this->match(Lexer::T_COMMA);
             $this->match(Lexer::T_IDENTIFIER);
-    
+
             $field = $this->lexer->token['value'];
-    
+
             while ($this->lexer->isNextToken(Lexer::T_DOT)) {
                 $this->match(Lexer::T_DOT);
                 $this->match(Lexer::T_IDENTIFIER);
                 $field .= '.'.$this->lexer->token['value'];
             }
-    
+
             $partialFieldSet[] = $field;
         }
 
