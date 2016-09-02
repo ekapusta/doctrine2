@@ -546,6 +546,7 @@ class ObjectHydrator extends AbstractHydrator
         }
 
         // Append new object to mixed result sets
+        var_dump($rowData);
         if (isset($rowData['newObjects'])) {
             if ( ! isset($resultKey) ) {
                 $resultKey = $this->resultCounter - 1;

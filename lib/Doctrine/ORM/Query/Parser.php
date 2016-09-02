@@ -1902,6 +1902,10 @@ class Parser
             return $expression;
         }
 
+        if ($token['type'] == Lexer::T_IDENTIFIER && $peek['type'] !== Lexer::T_DOT) {
+            return $this->SelectExpression();
+        }
+
         return $this->ScalarExpression();
     }
 

@@ -18,7 +18,7 @@ class NewOperatorTest extends OrmFunctionalTestCase
      * @var array
      */
     private $fixtures;
-    
+
     protected function setUp()
     {
         $this->useModelSet('cms');
@@ -26,7 +26,7 @@ class NewOperatorTest extends OrmFunctionalTestCase
 
         $this->loadFixtures();
     }
-    
+
     public function provideDataForHydrationMode()
     {
         return array(
@@ -187,7 +187,7 @@ class NewOperatorTest extends OrmFunctionalTestCase
         $dql = "
             SELECT
                 new CmsUserDTO(u.name, e.email, a.city)
-            FROM 
+            FROM
                 Doctrine\Tests\Models\CMS\CmsUser u
             JOIN
                 u.email e
@@ -223,7 +223,7 @@ class NewOperatorTest extends OrmFunctionalTestCase
 
         $this->_em->getConfiguration()
             ->addEntityNamespace('cms', 'Doctrine\Tests\Models\CMS');
-        
+
         $query  = $this->_em->createQuery($dql);
         $result = $query->getResult();
 
@@ -1083,6 +1083,18 @@ class NewOperatorTest extends OrmFunctionalTestCase
     {
         $dql = "SELECT new Doctrine\Tests\ORM\Functional\ClassWithPrivateConstructor(u.name) FROM Doctrine\Tests\Models\CMS\CmsUser u";
         $this->_em->createQuery($dql)->getResult();
+    }
+
+    public function testShouldSupportEntitiesAsArguments()
+    {
+        $dql = "
+            SELECT new Doctrine\Tests\Models\CMS\CmsUserEntityAwareDTO(u)
+            FROM Doctrine\Tests\Models\CMS\CmsUser u
+        ";
+        $result = $this->_em->createQuery($dql)->getResult();
+
+//         var_dump(get_class($result[0][0]));
+//         var_dump(array_keys($result[0]));
     }
 }
 

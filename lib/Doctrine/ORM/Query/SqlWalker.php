@@ -1574,13 +1574,19 @@ class SqlWalker implements TreeWalker
                     $sqlSelectExpressions[] = trim($e->dispatch($this)) . ' AS ' . $columnAlias;
                     break;
 
+                case ($e instanceof AST\SelectExpression):
+                    $sqlSelectExpressions[] = trim($e->dispatch($this));
+                    break;
+
                 default:
                     $sqlSelectExpressions[] = trim($e->dispatch($this)) . ' AS ' . $columnAlias;
                     break;
             }
 
-            $this->scalarResultAliasMap[$resultAlias] = $columnAlias;
-            $this->rsm->addScalarResult($columnAlias, $resultAlias, $fieldType);
+            if (!($e instanceof AST\SelectExpression)) {
+                $this->scalarResultAliasMap[$resultAlias] = $columnAlias;
+                $this->rsm->addScalarResult($columnAlias, $resultAlias, $fieldType);
+            }
 
             $this->rsm->newObjectMappings[$columnAlias] = array(
                 'className' => $newObjectExpression->className,
@@ -1588,6 +1594,8 @@ class SqlWalker implements TreeWalker
                 'argIndex'  => $argIndex
             );
         }
+
+        var_dump($this->rsm->newObjectMappings);
 
         return implode(', ', $sqlSelectExpressions);
     }
